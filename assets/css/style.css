@@ -1,0 +1,45 @@
+html {
+  box-sizing: border-box;
+  font-size: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+}
+
+* {
+  font-family: "Sora", sans-serif;
+}
+
+h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.065em;
+  margin-top: 0;
+}
+
+h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+p {
+  margin-top: 0;
+  margin-bottom: 0;
+  font-size: 1.125rem;
+}
+
+span {
+  font-size: 1.125rem;
+}
+
+:root {
+  --backgrond-color: #252525;
+  --border: 1px solid #515151;
+  --collection-header: #191919;
+  --collection-background: #1e1e1e;
+  --yellow-accent: #f9d252;
+}/*# sourceMappingURL=style.css.map */
