@@ -1,9 +1,9 @@
 .container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
     position: relative;
-    height: 80vh;
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    column-gap: 2em;
+    height: 45rem;
 
     &__draw {
         display: flex;
@@ -51,12 +51,9 @@
     }
 
     &__collection {
-        flex-basis: 40%;
-        border: var(--border);
-        background: var(--collection-background);
-        border-radius: 2.5em;
+        height: 100%;
+        overflow: hidden;
         position: relative;
-        max-height: 100%;
 
         &-header {
             background: var(--collection-header);
@@ -65,19 +62,29 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            position: absolute;
-            width: 100%;
+            border: var(--border);
+            position: relative;
+            z-index: 5;
         }
 
         &-body {
-            margin-top: 5em;
+            max-height: 100%;
+            column-gap: 1em;
+            box-sizing: border-box;
             display: flex;
-            justify-content: space-evenly;
+            justify-content: center;
             flex-wrap: wrap;
             row-gap: 1.5em;
-            position: relative;
-            z-index: 10;
-            overflow-y: scroll;
+            overflow-y: auto;
+            border: var(--border);
+            background: var(--collection-background);
+            border-radius: 2.5em;
+            position: absolute;
+            top: 0;
+            width: 100%;
+            z-index: 1;
+            padding: 4.5em .5em 2em .5em;
+            height: 100%;
         }
 
         &-image {
@@ -86,8 +93,6 @@
             border-radius: 1em;
             width: 8em;
             height: 8em;
-            position: relative;
-            z-index: 1;
         }
     }
 }
