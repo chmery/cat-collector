@@ -98,6 +98,8 @@ span {
   height: 100%;
   overflow: hidden;
   position: relative;
+  display: flex;
+  flex-direction: column;
 }
 .container__collection-header {
   background: var(--collection-header);
@@ -111,31 +113,32 @@ span {
   z-index: 5;
 }
 .container__collection-body {
-  max-height: 100%;
-  -moz-column-gap: 1em;
-       column-gap: 1em;
+  height: 100%;
+  width: 100%;
   box-sizing: border-box;
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  row-gap: 1.5em;
   overflow-y: auto;
   border: var(--border);
   background: var(--collection-background);
   border-radius: 2.5em;
+  padding-top: 4.5em;
+  padding-bottom: 2em;
   position: absolute;
   top: 0;
-  width: 100%;
-  z-index: 1;
-  padding: 4.5em 0.5em 2em 0.5em;
-  height: 100%;
+}
+.container__collection-images {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  row-gap: 1em;
+  align-content: flex-start;
 }
 .container__collection-image {
   background-image: url(/assets/images/placeholder.jpg);
   background-size: cover;
+  background-position: center;
   border-radius: 1em;
-  width: 8em;
   height: 8em;
+  width: 8em;
 }
 
 .container__collection-body::-webkit-scrollbar {
