@@ -23,11 +23,21 @@
         box-sizing: border-box;
 
         &-image {
+            margin-bottom: 1.5em;
+        }
+
+        &-preview {
+            margin-top: 1em;
+        }
+
+        &-image,
+        &-preview {
             border: var(--border);
             height: 100%;
             width: 100%;
             border-radius: 2.5em;
-            margin-bottom: 1.5em;
+            background-size: cover;
+            background-position: center;
         }
 
         &-buttons {
@@ -40,16 +50,6 @@
         &-btn {
             padding: 1em 2em;
             border-radius: 10em;
-        }
-
-        &-preview {
-            background-image: url(/assets/images/placeholder.jpg);
-            background-size: cover;
-            border: var(--border);
-            width: 100%;
-            height: 100%;
-            border-radius: 2.5em;
-            margin-top: 1em;
         }
     }
 
@@ -96,7 +96,6 @@
 
         &-image {
             position: relative;
-            background-image: url(/assets/images/placeholder.jpg);
             background-size: cover;
             background-position: center;
             border-radius: 1em;
@@ -121,7 +120,7 @@
                 padding: 0.7em;
                 padding-bottom: 0.5em;
                 opacity: 0;
-                transition: visibility 0.2s, opacity 0.2s;
+                transition: visibility 0.2s, opacity 0.2s, background 0.2s;
 
                 &--left {
                     left: 10%;

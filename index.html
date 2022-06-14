@@ -14,13 +14,13 @@
         <h1>CAT COLLECTOR 🐱</h1>
         <div class="container">
             <div class="container__draw">
-                <img class="container__draw-image" src="assets/images/placeholder.jpg" alt="cat image" />
+                <div class="container__draw-image"></div>
                 <div class="container__draw-buttons">
-                    <button class="container__btn container__draw-btn">
+                    <button class="container__btn container__draw-btn" id="add-to-collection-button">
                         <p class="container__text">Add to collection</p>
                     </button>
                     <span class="container__span">or</span>
-                    <button class="container__btn container__draw-btn">
+                    <button class="container__btn container__draw-btn" id="draw-another-button">
                         <p class="container__text">Draw another cat</p>
                     </button>
                 </div>
@@ -29,55 +29,37 @@
             </div>
             <div class="container__collection">
                 <div class="container__collection-header">
-                    <p class="container__text">Collection of 0 🐈</p>
+                    <p class="container__text">Collection of <span class="container__span" id="cats-amount">0</span> 🐈</p>
                 </div>
                 <div class="container__collection-body">
                     <div class="container__collection-images">
-                        <div class="container__collection-image">
-                            <button
-                                class="container__btn container__collection-image-btn container__collection-image-btn--left"
-                            >
-                                <img
-                                    class="container__collection-image-btn-icon"
-                                    src="assets/images/delete.svg"
-                                    alt="delete icon"
-                                />
-                            </button>
-                            <button
-                                class="container__btn container__collection-image-btn container__collection-image-btn--right"
-                            >
-                                <img
-                                    class="container__collection-image-btn-icon"
-                                    src="assets/images/preview.svg"
-                                    alt="pewview icon"
-                                />
-                            </button>
-                            <div class="container__collection-image-dark"></div>
-                        </div>
-                        <div class="container__collection-image">
-                            <button
-                                class="container__btn container__collection-image-btn container__collection-image-btn--left"
-                            >
-                                <img
-                                    class="container__collection-image-btn-icon"
-                                    src="assets/images/delete.svg"
-                                    alt="delete icon"
-                                />
-                            </button>
-                            <button
-                                class="container__btn container__collection-image-btn container__collection-image-btn--right"
-                            >
-                                <img
-                                    class="container__collection-image-btn-icon"
-                                    src="assets/images/preview.svg"
-                                    alt="pewview icon"
-                                />
-                            </button>
-                            <div class="container__collection-image-dark"></div>
-                        </div>
+                        <template class="container__collection-template">
+                            <div class="container__collection-image">
+                                <button
+                                    class="container__btn container__collection-image-btn container__collection-image-btn--left"
+                                >
+                                    <img
+                                        class="container__collection-image-btn-icon"
+                                        src="assets/images/delete.svg"
+                                        lt="delete icon"
+                                    />
+                                </button>
+                                <button
+                                    class="container__btn container__collection-image-btn container__collection-image-btn--right"
+                                >
+                                    <img
+                                        class="container__collection-image-btn-icon"
+                                        src="assets/images/preview.svg"
+                                        alt="preview icon"
+                                    />
+                                </button>
+                                <div class="container__collection-image-dark"></div>
+                            </div>
+                        </template>
                     </div>
                 </div>
             </div>
         </div>
     </body>
+    <script src="assets/js/main.js"></script>
 </html>
