@@ -64,6 +64,32 @@ span {
   background: var(--yellow-accent);
   cursor: pointer;
 }
+.container__loader {
+  display: none;
+  border: 0.625rem solid transparent;
+  border-top: 0.625rem solid var(--yellow-accent);
+  border-radius: 50%;
+  width: 3.75rem;
+  height: 3.75rem;
+  -webkit-animation: loader-spin 1s ease infinite;
+          animation: loader-spin 1s ease infinite;
+}
+@-webkit-keyframes loader-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@keyframes loader-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
 .container__draw {
   display: flex;
   flex-direction: column;
@@ -71,6 +97,9 @@ span {
   box-sizing: border-box;
 }
 .container__draw-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   margin-bottom: 1.5em;
 }
 .container__draw-preview {

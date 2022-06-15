@@ -1,3 +1,5 @@
+@use "animation";
+
 .container {
     position: relative;
     display: grid;
@@ -16,6 +18,16 @@
         }
     }
 
+    &__loader {
+        display: none;
+        border: 0.625rem solid transparent;
+        border-top: 0.625rem solid var(--yellow-accent);
+        border-radius: 50%;
+        width: 3.75rem;
+        height: 3.75rem;
+        @include animation.loader-spin;
+    }
+
     &__draw {
         display: flex;
         flex-direction: column;
@@ -23,6 +35,9 @@
         box-sizing: border-box;
 
         &-image {
+            display: flex;
+            justify-content: center;
+            align-items: center;
             margin-bottom: 1.5em;
         }
 
