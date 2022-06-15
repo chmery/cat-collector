@@ -5,6 +5,7 @@ const drawAnotherBtn = document.querySelector("#draw-another-button");
 const collectionElementsAmountOutput = document.querySelector("#collection-elements-amount");
 const collectionImagesContainer = document.querySelector(".container__collection-images");
 const collectionElementTemplate = document.querySelector(".container__collection-template");
+const collectionImagePreviewOutput = document.querySelector(".container__draw-preview");
 
 let drawnImageSource = "";
 let collectionElementsAmount = 0;
@@ -36,6 +37,7 @@ const addToCollection = () => {
     collectionElement.querySelector(".container__collection-image").style.backgroundImage = `url("${drawnImageSource}")`;
     collectionElement.querySelector(".container__collection-image").setAttribute("id", collectionElementId);
     collectionElement.querySelector("#remove-image").setAttribute("onclick", `removeCollectionElement(${collectionElementId})`);
+    collectionElement.querySelector("#preview-image").setAttribute("onclick", `previewCollectionImage("${drawnImageSource}")`);
 
     if (currentCollectionElementImageSource != `url("${drawnImageSource}")`) {
         currentCollectionElementImageSource = `url("${drawnImageSource}")`;
@@ -57,7 +59,12 @@ const removeCollectionElement = (collectionElementId) => {
 };
 
 const checkIfCanAddAgain = (collectionElementToRemove) => {
-    if (collectionElementToRemove.style.backgroundImage == currentCollectionElementImageSource) currentCollectionElementImageSource = "";
+    if (collectionElementToRemove.style.backgroundImage == currentCollectionElementImageSource)
+        currentCollectionElementImageSource = "";
+};
+
+const previewCollectionImage = (drawnImageSource) => {
+    collectionImagePreviewOutput.style.backgroundImage = `url("${drawnImageSource}")`;
 };
 
 const setCollectionElementsAmount = () => {
