@@ -1,0 +1,24 @@
+.footer {
+    display: flex;
+    margin-bottom: 3em;
+    flex-wrap: wrap;
+    column-gap: 2em;
+
+    &__about {
+        flex: 40%;
+    }
+
+    &__remember {
+        flex: 40%;
+    }
+
+    &__api {
+        margin-top: 2em;
+        flex: 100%;
+
+        &-text {
+            color: #898989;
+        }
+
+    }
+}

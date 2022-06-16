@@ -27,12 +27,18 @@ h1 {
 h3 {
   font-size: 1.25rem;
   font-weight: 600;
+  margin-bottom: 0.5em;
 }
 
 p {
   margin-top: 0;
   margin-bottom: 0;
   font-size: 1.125rem;
+}
+
+a {
+  color: inherit;
+  text-decoration: underline;
 }
 
 span {
@@ -54,6 +60,7 @@ span {
   -moz-column-gap: 2em;
        column-gap: 2em;
   height: 45rem;
+  margin-bottom: 3em;
 }
 .container__btn {
   background: transparent;
@@ -218,4 +225,25 @@ span {
 }
 .container__collection-body::-webkit-scrollbar-thumb:hover {
   background: #464646;
+}
+
+.footer {
+  display: flex;
+  margin-bottom: 3em;
+  flex-wrap: wrap;
+  -moz-column-gap: 2em;
+       column-gap: 2em;
+}
+.footer__about {
+  flex: 40%;
+}
+.footer__remember {
+  flex: 40%;
+}
+.footer__api {
+  margin-top: 2em;
+  flex: 100%;
+}
+.footer__api-text {
+  color: #898989;
 }/*# sourceMappingURL=style.css.map */
