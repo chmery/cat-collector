@@ -45,7 +45,7 @@ const setNewImageSource = () => {
         });
 };
 
-//setNewImageSource();
+setNewImageSource();
 
 const addToCollection = () => {
     const collectionElement = collectionElementTemplate.content.cloneNode(true);
@@ -54,6 +54,11 @@ const addToCollection = () => {
     collectionElement.querySelector("#remove-image").setAttribute("onclick", `removeCollectionElement(${collectionElementId})`);
     collectionElement.querySelector("#preview-image").setAttribute("onclick", `previewCollectionImage("${drawnImageSource}")`);
 
+    isElementInCollection(collectionElement);
+    saveCollectionToLocalStorage();
+};
+
+const isElementInCollection = (collectionElement) => {
     if (currentCollectionElementImageSource != `url("${drawnImageSource}")`) {
         currentCollectionElementImageSource = `url("${drawnImageSource}")`;
         collectionElementId++;
@@ -64,8 +69,6 @@ const addToCollection = () => {
     } else {
         alert("You've already added this cat!");
     }
-
-    localStorage.collectionHTML = collectionImagesContainer.innerHTML;
 };
 
 const removeCollectionElement = (collectionElementId) => {
@@ -75,12 +78,16 @@ const removeCollectionElement = (collectionElementId) => {
     localStorage.collectionElementsAmount = collectionElementsAmount;
     setCollectionElementsAmount();
     checkIfCanAddAgain(collectionElementToRemove);
-    localStorage.collectionHTML = collectionImagesContainer.innerHTML;
+    saveCollectionToLocalStorage();
 };
 
 const checkIfCanAddAgain = (collectionElementToRemove) => {
     if (collectionElementToRemove.style.backgroundImage == currentCollectionElementImageSource)
         currentCollectionElementImageSource = "";
+};
+
+const saveCollectionToLocalStorage = () => {
+    localStorage.collectionHTML = collectionImagesContainer.innerHTML;
 };
 
 const previewCollectionImage = (drawnImageSource) => {
