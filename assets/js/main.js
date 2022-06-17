@@ -18,7 +18,7 @@ const setSavedElementsAmount = () => {
 };
 
 const setSavedCollectionElements = () => {
-    if (localStorage.collectionHTML == undefined) return;
+    if (localStorage.collectionHTML === undefined) return;
     collectionImagesContainer.innerHTML = localStorage.collectionHTML;
 };
 
@@ -72,13 +72,16 @@ const isElementInCollection = (collectionElement) => {
 };
 
 const removeCollectionElement = (collectionElementId) => {
-    const collectionElementToRemove = document.getElementById(collectionElementId);
-    collectionElementToRemove.remove();
-    collectionElementsAmount--;
-    localStorage.collectionElementsAmount = collectionElementsAmount;
-    setCollectionElementsAmount();
-    checkIfCanAddAgain(collectionElementToRemove);
-    saveCollectionToLocalStorage();
+    const confirmRemoval = confirm("Are you sure you want to remove this cat?");
+    if (confirmRemoval) {
+        const collectionElementToRemove = document.getElementById(collectionElementId);
+        collectionElementToRemove.remove();
+        collectionElementsAmount--;
+        localStorage.collectionElementsAmount = collectionElementsAmount;
+        setCollectionElementsAmount();
+        checkIfCanAddAgain(collectionElementToRemove);
+        saveCollectionToLocalStorage();
+    }
 };
 
 const checkIfCanAddAgain = (collectionElementToRemove) => {
@@ -100,6 +103,6 @@ const setCollectionElementsAmount = () => {
 
 drawAnotherBtn.addEventListener("click", setNewImageSource);
 addToCollectionBtn.addEventListener("click", () => {
-    if (drawnImageSource == "") return;
+    if (drawnImageSource === "") return;
     addToCollection();
 });
