@@ -7,6 +7,8 @@ const collectionImagesContainer = document.querySelector(".container__collection
 const collectionElementTemplate = document.querySelector(".container__collection-template");
 const collectionImagePreviewOutput = document.querySelector(".container__draw-preview");
 
+const usedIdNumbers = JSON.parse(localStorage.getItem("usedIdNumbers")) || [];
+
 let drawnImageSource = "";
 let collectionElementsAmount = localStorage.collectionElementsAmount || 0;
 let currentCollectionElementImageSource = "";
@@ -47,7 +49,21 @@ const setNewImageSource = () => {
 
 setNewImageSource();
 
+const wasIdUsed = () => {
+    const isIdInArray = () => {
+        return usedIdNumbers.some((item) => item === collectionElementId);
+    };
+
+    while (isIdInArray() && usedIdNumbers !== 0) {
+        collectionElementId++;
+    }
+
+    usedIdNumbers.push(collectionElementId);
+    localStorage.setItem("usedIdNumbers", JSON.stringify(usedIdNumbers));
+};
+
 const addToCollection = () => {
+    wasIdUsed();
     const collectionElement = collectionElementTemplate.content.cloneNode(true);
     collectionElement.querySelector(".container__collection-image").style.backgroundImage = `url("${drawnImageSource}")`;
     collectionElement.querySelector(".container__collection-image").setAttribute("id", collectionElementId);
