@@ -1,6 +1,7 @@
 const drawnImagesContainer = document.querySelector(".container__draw-image");
 const addToCollectionBtn = document.querySelector("#add-to-collection-button");
 const drawAnotherBtn = document.querySelector("#draw-another-button");
+const removeSelectedBtn = document.querySelector(".container__collection-remove-selected");
 
 const collectionElementsAmountOutput = document.querySelector("#collection-elements-amount");
 const collectionImagesContainer = document.querySelector(".container__collection-images");
@@ -74,7 +75,9 @@ const addToCollection = () => {
     collectionElement
         .querySelector("#preview-image")
         .setAttribute("onclick", `event.stopPropagation(); previewCollectionImage("${drawnImageSource}");`);
-    collectionElement.querySelector(".container__collection-image").setAttribute("onclick", `markAsSelected(${collectionElementId})`);
+    collectionElement
+        .querySelector(".container__collection-image")
+        .setAttribute("onclick", `markAsSelected(${collectionElementId})`);
 
     if (isElementInCollection() === false) {
         setCollectionElementsAmount();
@@ -95,20 +98,31 @@ const markAsSelected = (collectionElementId) => {
         selectedCollectionElements.push(collectionElementId);
     } else {
         selectedElement.style.border = "";
-        const afterDeselect = selectedCollectionElements.filter(item => item !== collectionElementId);
+        const afterDeselect = selectedCollectionElements.filter((item) => item !== collectionElementId);
         selectedCollectionElements = afterDeselect;
     }
+    console.log(selectedCollectionElements);
     showRemoveSelectedBtn();
 };
 
 const showRemoveSelectedBtn = () => {
-    const removeSelectedBtn = document.querySelector(".container__collection-remove-selected");
     if (selectedCollectionElements.length > 0) {
         removeSelectedBtn.style.display = "block";
     } else {
         removeSelectedBtn.style.display = "none";
     }
-}
+};
+
+const removeAllSelected = () => {
+    const confirmSelectedRemoval = confirm("Are you sure you want to remove all selected cats?");
+    if (confirmSelectedRemoval) {
+        selectedCollectionElements.forEach((element) => {
+            removeCollectionElement(element);
+        });
+        selectedCollectionElements.length = 0;
+        showRemoveSelectedBtn();
+    }
+};
 
 const isElementInCollection = () => {
     if (currentCollectionElementImageSource != `url("${drawnImageSource}")`) {
@@ -123,19 +137,13 @@ const isElementInCollection = () => {
 };
 
 const removeCollectionElement = (collectionElementId) => {
-    const confirmRemoval = confirm("Are you sure you want to remove this cat?");
-
-    if (confirmRemoval) {
-        const collectionElementToRemove = document.getElementById(collectionElementId);
-        collectionElementToRemove.remove();
-        collectionElementsAmount--;
-        localStorage.collectionElementsAmount = collectionElementsAmount;
-        setCollectionElementsAmount();
-        checkIfCanAddAgain(collectionElementToRemove);
-        saveCollectionToLocalStorage();
-    }
-
-    resetIfPossible();
+    const collectionElementToRemove = document.getElementById(collectionElementId);
+    collectionElementToRemove.remove();
+    collectionElementsAmount--;
+    localStorage.collectionElementsAmount = collectionElementsAmount;
+    setCollectionElementsAmount();
+    checkIfCanAddAgain(collectionElementToRemove);
+    saveCollectionToLocalStorage();
 };
 
 const checkIfCanAddAgain = (collectionElementToRemove) => {
@@ -162,6 +170,7 @@ const setCollectionElementsAmount = () => {
     collectionElementsAmountOutput.textContent = collectionElementsAmount;
 };
 
+removeSelectedBtn.addEventListener("click", removeAllSelected);
 drawAnotherBtn.addEventListener("click", setNewImageSource);
 addToCollectionBtn.addEventListener("click", () => {
     if (drawnImageSource === "") return;
