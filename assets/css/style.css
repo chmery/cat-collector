@@ -169,6 +169,7 @@ span {
   align-content: flex-start;
 }
 .container__collection-image {
+  cursor: pointer;
   position: relative;
   background-size: cover;
   background-position: center;

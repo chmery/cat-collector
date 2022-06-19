@@ -47,7 +47,7 @@ const setNewImageSource = () => {
         });
 };
 
-setNewImageSource();
+//setNewImageSource();
 
 const wasIdUsed = () => {
     if (isElementInCollection === true) return;
@@ -68,8 +68,13 @@ const addToCollection = () => {
     const collectionElement = collectionElementTemplate.content.cloneNode(true);
     collectionElement.querySelector(".container__collection-image").style.backgroundImage = `url("${drawnImageSource}")`;
     collectionElement.querySelector(".container__collection-image").setAttribute("id", collectionElementId);
-    collectionElement.querySelector("#remove-image").setAttribute("onclick", `removeCollectionElement(${collectionElementId})`);
-    collectionElement.querySelector("#preview-image").setAttribute("onclick", `previewCollectionImage("${drawnImageSource}")`);
+    collectionElement
+        .querySelector("#remove-image")
+        .setAttribute("onclick", `event.stopPropagation(); removeCollectionElement(${collectionElementId});`);
+    collectionElement
+        .querySelector("#preview-image")
+        .setAttribute("onclick", `event.stopPropagation(); previewCollectionImage("${drawnImageSource}");`);
+    collectionElement.querySelector(".container__collection-image").setAttribute("onclick", `setSelected(${collectionElementId})`);
 
     if (isElementInCollection() === false) {
         setCollectionElementsAmount();
@@ -79,6 +84,20 @@ const addToCollection = () => {
     }
 
     saveCollectionToLocalStorage();
+};
+
+let selectedCollectionElements = [];
+
+const setSelected = (collectionElementId) => {
+    const selectedElement = document.getElementById(collectionElementId);
+    if (selectedElement.style.border === "") {
+        selectedElement.style.border = "4px solid var(--yellow-accent)";
+        selectedCollectionElements.push(collectionElementId);
+    } else {
+        selectedElement.style.border = "";
+        const afterDeselect = selectedCollectionElements.filter(item => item !== collectionElementId);
+        selectedCollectionElements = afterDeselect;
+    }
 };
 
 const isElementInCollection = () => {
@@ -126,6 +145,7 @@ const saveCollectionToLocalStorage = () => {
 };
 
 const previewCollectionImage = (drawnImageSource) => {
+    
     collectionImagePreviewOutput.style.backgroundImage = `url("${drawnImageSource}")`;
 };
 
