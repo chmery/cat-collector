@@ -30,11 +30,7 @@ setSavedCollectionElements();
 
 const toggleLoader = (option) => {
     const loader = document.querySelector(".container__loader");
-    if (option == "on") {
-        loader.style.display = "block";
-    } else {
-        loader.style.display = "none";
-    }
+    option === "on" ? (loader.style.display = "block") : (loader.style.display = "none");
 };
 
 const setNewImageSource = () => {
@@ -51,7 +47,7 @@ const setNewImageSource = () => {
 //setNewImageSource();
 
 const wasIdUsed = () => {
-    if (isElementInCollection === true) return;
+    if (currentCollectionElementImageSource === `url("${drawnImageSource}")`) return;
     const isIdInArray = () => {
         return usedIdNumbers.some((item) => item === collectionElementId);
     };
@@ -67,26 +63,49 @@ const wasIdUsed = () => {
 const addToCollection = () => {
     wasIdUsed();
     const collectionElement = collectionElementTemplate.content.cloneNode(true);
-    collectionElement.querySelector(".container__collection-image").style.backgroundImage = `url("${drawnImageSource}")`;
-    collectionElement.querySelector(".container__collection-image").setAttribute("id", collectionElementId);
-    collectionElement
-        .querySelector("#remove-image")
-        .setAttribute("onclick", `event.stopPropagation(); removeCollectionElement(${collectionElementId});`);
-    collectionElement
-        .querySelector("#preview-image")
-        .setAttribute("onclick", `event.stopPropagation(); previewCollectionImage("${drawnImageSource}");`);
-    collectionElement
-        .querySelector(".container__collection-image")
-        .setAttribute("onclick", `markAsSelected(${collectionElementId})`);
+
+    const setBackgroundImage = () => {
+        collectionElement.querySelector(".container__collection-image").style.backgroundImage = `url("${drawnImageSource}")`;
+    };
+
+    const setCollectionElementId = () => {
+        collectionElement.querySelector(".container__collection-image").setAttribute("id", collectionElementId);
+    };
+
+    const setOnClickFunctions = () => {
+        collectionElement
+            .querySelector("#remove-image")
+            .setAttribute("onclick", `event.stopPropagation(); removeSingleElement(${collectionElementId});`);
+        collectionElement
+            .querySelector("#preview-image")
+            .setAttribute("onclick", `event.stopPropagation(); previewCollectionImage("${drawnImageSource}");`);
+        collectionElement
+            .querySelector(".container__collection-image")
+            .setAttribute("onclick", `markAsSelected(${collectionElementId})`);
+    };
 
     if (isElementInCollection() === false) {
-        setCollectionElementsAmount();
+        setBackgroundImage();
+        setCollectionElementId();
+        setOnClickFunctions();
         collectionImagesContainer.appendChild(collectionElement);
     } else {
         alert("You've already added this cat!");
     }
 
     saveCollectionToLocalStorage();
+};
+
+const isElementInCollection = () => {
+    if (currentCollectionElementImageSource != `url("${drawnImageSource}")`) {
+        currentCollectionElementImageSource = `url("${drawnImageSource}")`;
+        collectionElementId++;
+        collectionElementsAmount++;
+        setCollectionElementsAmount();
+        return false;
+    } else {
+        return true;
+    }
 };
 
 let selectedCollectionElements = [];
@@ -98,70 +117,49 @@ const markAsSelected = (collectionElementId) => {
         selectedCollectionElements.push(collectionElementId);
     } else {
         selectedElement.style.boxShadow = "";
-        const afterDeselect = selectedCollectionElements.filter((item) => item !== collectionElementId);
-        selectedCollectionElements = afterDeselect;
+        removeIdFromArraySelected(collectionElementId);
     }
-    setRemoveSelectedButton();
+    setRemoveAllSelectedButton();
+    console.log(selectedCollectionElements);
 };
 
-const setRemoveSelectedButton = () => {
-    if (selectedCollectionElements.length > 0) {
-        removeAllSelectedBtn.style.display = "block";
-    } else {
-        removeAllSelectedBtn.style.display = "none";
-    }
+const setRemoveAllSelectedButton = () => {
+    selectedCollectionElements.length > 0
+        ? (removeAllSelectedBtn.style.display = "block")
+        : (removeAllSelectedBtn.style.display = "none");
 };
 
 const removeAllSelected = () => {
     const confirmSelectedRemoval = confirm("Are you sure you want to remove all selected cats?");
     if (confirmSelectedRemoval) {
         selectedCollectionElements.forEach((element) => {
-            removeSelectedCollectionElements(element);
+            removeCollectionElement(element);
         });
         selectedCollectionElements.length = 0;
-        setRemoveSelectedButton();
+        setRemoveAllSelectedButton();
     }
 };
 
-const isElementInCollection = () => {
-    if (currentCollectionElementImageSource != `url("${drawnImageSource}")`) {
-        currentCollectionElementImageSource = `url("${drawnImageSource}")`;
-        collectionElementId++;
-        collectionElementsAmount++;
-        localStorage.collectionElementsAmount = collectionElementsAmount;
-        return false;
-    } else {
-        return true;
-    }
-};
-
-const removeSelectedCollectionElements = (collectionElementId) => {
-    const collectionElementToRemove = document.getElementById(collectionElementId);
-    collectionElementToRemove.remove();
-    collectionElementsAmount--;
-    localStorage.collectionElementsAmount = collectionElementsAmount;
-    setCollectionElementsAmount();
-    checkIfCanAddAgain(collectionElementToRemove);
-    saveCollectionToLocalStorage();
-    resetIfPossible();
+const removeSingleElement = (collectionElementId) => {
+    const confirmRemoval = confirm("Are you sure you want to delete this cat?");
+    if (confirmRemoval) removeCollectionElement(collectionElementId);
 };
 
 const removeCollectionElement = (collectionElementId) => {
-    const confirmSingleRemoval = confirm("Are you sure you want to remove this cat?");
-    if (confirmSingleRemoval) {
-        const collectionElementToRemove = document.getElementById(collectionElementId);
-        collectionElementToRemove.remove();
-        collectionElementsAmount--;
-        localStorage.collectionElementsAmount = collectionElementsAmount;
-        setCollectionElementsAmount();
-        checkIfCanAddAgain(collectionElementToRemove);
-        saveCollectionToLocalStorage();
-        const afterDeselect = selectedCollectionElements.filter((item) => item !== collectionElementId);
-        selectedCollectionElements = afterDeselect;
-        setRemoveSelectedButton();
+    const collectionElementToRemove = document.getElementById(collectionElementId);
+    collectionElementToRemove.remove();
+    collectionElementsAmount--;
+    setCollectionElementsAmount();
+    saveCollectionToLocalStorage();
+    checkIfCanAddAgain(collectionElementToRemove);
+    removeIdFromArraySelected(collectionElementId);
+    setRemoveAllSelectedButton();
+    resetIfPossible();
+};
 
-        resetIfPossible();
-    }
+const removeIdFromArraySelected = (collectionElementId) => {
+    const afterDeselect = selectedCollectionElements.filter((item) => item !== collectionElementId);
+    selectedCollectionElements = afterDeselect;
 };
 
 const checkIfCanAddAgain = (collectionElementToRemove) => {
@@ -185,6 +183,7 @@ const previewCollectionImage = (drawnImageSource) => {
 };
 
 const setCollectionElementsAmount = () => {
+    localStorage.collectionElementsAmount = collectionElementsAmount;
     collectionElementsAmountOutput.textContent = collectionElementsAmount;
 };
 
