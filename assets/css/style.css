@@ -136,6 +136,7 @@ span {
   position: relative;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
 }
 .container__collection-header {
   background: var(--collection-header);
@@ -160,6 +161,14 @@ span {
   padding-bottom: 2em;
   position: absolute;
   top: 0;
+}
+.container__collection-remove-selected {
+  display: none;
+  background: var(--backgrond-color);
+  padding: 1em 2em;
+  position: relative;
+  border-radius: 10em;
+  margin: 1em 2em;
 }
 .container__collection-images {
   display: flex;

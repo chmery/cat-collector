@@ -75,6 +75,7 @@
         position: relative;
         display: flex;
         flex-direction: column;
+        justify-content: space-between;
 
         &-header {
             background: var(--collection-header);
@@ -100,6 +101,15 @@
             padding-bottom: 2em;
             position: absolute;
             top: 0;
+        }
+
+        &-remove-selected {
+            display: none;
+            background: var(--backgrond-color);
+            padding: 1em 2em;
+            position: relative;
+            border-radius: 10em;
+            margin: 1em 2em;
         }
 
         &-images {

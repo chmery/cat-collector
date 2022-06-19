@@ -74,7 +74,7 @@ const addToCollection = () => {
     collectionElement
         .querySelector("#preview-image")
         .setAttribute("onclick", `event.stopPropagation(); previewCollectionImage("${drawnImageSource}");`);
-    collectionElement.querySelector(".container__collection-image").setAttribute("onclick", `setSelected(${collectionElementId})`);
+    collectionElement.querySelector(".container__collection-image").setAttribute("onclick", `markAsSelected(${collectionElementId})`);
 
     if (isElementInCollection() === false) {
         setCollectionElementsAmount();
@@ -88,7 +88,7 @@ const addToCollection = () => {
 
 let selectedCollectionElements = [];
 
-const setSelected = (collectionElementId) => {
+const markAsSelected = (collectionElementId) => {
     const selectedElement = document.getElementById(collectionElementId);
     if (selectedElement.style.border === "") {
         selectedElement.style.border = "4px solid var(--yellow-accent)";
@@ -98,7 +98,17 @@ const setSelected = (collectionElementId) => {
         const afterDeselect = selectedCollectionElements.filter(item => item !== collectionElementId);
         selectedCollectionElements = afterDeselect;
     }
+    showRemoveSelectedBtn();
 };
+
+const showRemoveSelectedBtn = () => {
+    const removeSelectedBtn = document.querySelector(".container__collection-remove-selected");
+    if (selectedCollectionElements.length > 0) {
+        removeSelectedBtn.style.display = "block";
+    } else {
+        removeSelectedBtn.style.display = "none";
+    }
+}
 
 const isElementInCollection = () => {
     if (currentCollectionElementImageSource != `url("${drawnImageSource}")`) {
@@ -145,7 +155,6 @@ const saveCollectionToLocalStorage = () => {
 };
 
 const previewCollectionImage = (drawnImageSource) => {
-    
     collectionImagePreviewOutput.style.backgroundImage = `url("${drawnImageSource}")`;
 };
 
