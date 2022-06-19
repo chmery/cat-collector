@@ -93,15 +93,14 @@ let selectedCollectionElements = [];
 
 const markAsSelected = (collectionElementId) => {
     const selectedElement = document.getElementById(collectionElementId);
-    if (selectedElement.style.border === "") {
-        selectedElement.style.border = "4px solid var(--yellow-accent)";
+    if (selectedElement.style.boxShadow === "") {
+        selectedElement.style.boxShadow = "0px 0px 0px 4px #F9D252";
         selectedCollectionElements.push(collectionElementId);
     } else {
-        selectedElement.style.border = "";
+        selectedElement.style.boxShadow = "";
         const afterDeselect = selectedCollectionElements.filter((item) => item !== collectionElementId);
         selectedCollectionElements = afterDeselect;
     }
-    console.log(selectedCollectionElements);
     setRemoveSelectedButton();
 };
 
