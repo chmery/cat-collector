@@ -46,8 +46,8 @@ const setNewImageSource = () => {
 
 //setNewImageSource();
 
-const wasIdUsed = () => {
-    if (currentCollectionElementImageSource === `url("${drawnImageSource}")`) return;
+const isIdUsed = () => {
+    if (elementInCollection()) return;
     const isIdInArray = () => {
         return usedIdNumbers.some((item) => item === collectionElementId);
     };
@@ -60,8 +60,13 @@ const wasIdUsed = () => {
     localStorage.setItem("usedIdNumbers", JSON.stringify(usedIdNumbers));
 };
 
+const elementInCollection = () => {
+    if (currentCollectionElementImageSource === `url("${drawnImageSource}")`) return true;
+    return false;
+};
+
 const addToCollection = () => {
-    wasIdUsed();
+    isIdUsed();
     const collectionElement = collectionElementTemplate.content.cloneNode(true);
 
     const setBackgroundImage = () => {
@@ -147,14 +152,18 @@ const removeSingleElement = (collectionElementId) => {
 
 const removeCollectionElement = (collectionElementId) => {
     const collectionElementToRemove = document.getElementById(collectionElementId);
-    collectionElementToRemove.remove();
-    collectionElementsAmount--;
+    removeElement(collectionElementToRemove);
     setCollectionElementsAmount();
     saveCollectionToLocalStorage();
     checkIfCanAddAgain(collectionElementToRemove);
     removeIdFromArraySelected(collectionElementId);
     setRemoveAllSelectedButton();
     resetIfPossible();
+};
+
+const removeElement = (collectionElementToRemove) => {
+    collectionElementToRemove.remove();
+    collectionElementsAmount--;
 };
 
 const removeIdFromArraySelected = (collectionElementId) => {
