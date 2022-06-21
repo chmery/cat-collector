@@ -46,7 +46,7 @@ const setNewImageSource = () => {
 
 //setNewImageSource();
 
-const isIdUsed = () => {
+const setUsedId = () => {
     if (elementInCollection()) return;
     const isIdInArray = () => {
         return usedIdNumbers.some((item) => item === collectionElementId);
@@ -62,11 +62,10 @@ const isIdUsed = () => {
 
 const elementInCollection = () => {
     if (currentCollectionElementImageSource === `url("${drawnImageSource}")`) return true;
-    return false;
 };
 
 const addToCollection = () => {
-    isIdUsed();
+    setUsedId();
     const collectionElement = collectionElementTemplate.content.cloneNode(true);
 
     const setBackgroundImage = () => {
@@ -77,22 +76,9 @@ const addToCollection = () => {
         collectionElement.querySelector(".container__collection-image").setAttribute("id", collectionElementId);
     };
 
-    const setOnClickFunctions = () => {
-        collectionElement
-            .querySelector("#remove-image")
-            .setAttribute("onclick", `event.stopPropagation(); removeSingleElement(${collectionElementId});`);
-        collectionElement
-            .querySelector("#preview-image")
-            .setAttribute("onclick", `event.stopPropagation(); previewCollectionImage("${drawnImageSource}");`);
-        collectionElement
-            .querySelector(".container__collection-image")
-            .setAttribute("onclick", `markAsSelected(${collectionElementId})`);
-    };
-
     if (isElementInCollection() === false) {
         setBackgroundImage();
         setCollectionElementId();
-        setOnClickFunctions();
         collectionImagesContainer.appendChild(collectionElement);
     } else {
         alert("You've already added this cat!");
@@ -115,7 +101,7 @@ const isElementInCollection = () => {
 
 let selectedCollectionElements = [];
 
-const markAsSelected = (collectionElementId) => {
+const markElementAsSelected = (collectionElementId) => {
     const selectedElement = document.getElementById(collectionElementId);
     if (selectedElement.style.boxShadow === "") {
         selectedElement.style.boxShadow = "0px 0px 0px 4px #F9D252";
@@ -124,11 +110,10 @@ const markAsSelected = (collectionElementId) => {
         selectedElement.style.boxShadow = "";
         removeIdFromArraySelected(collectionElementId);
     }
-    setRemoveAllSelectedButton();
-    console.log(selectedCollectionElements);
+    toggleRemoveSelectedBtn();
 };
 
-const setRemoveAllSelectedButton = () => {
+const toggleRemoveSelectedBtn = () => {
     selectedCollectionElements.length > 0
         ? (removeAllSelectedBtn.style.display = "block")
         : (removeAllSelectedBtn.style.display = "none");
@@ -141,11 +126,11 @@ const removeAllSelected = () => {
             removeCollectionElement(element);
         });
         selectedCollectionElements.length = 0;
-        setRemoveAllSelectedButton();
+        toggleRemoveSelectedBtn();
     }
 };
 
-const removeSingleElement = (collectionElementId) => {
+const removeSingleElementById = (collectionElementId) => {
     const confirmRemoval = confirm("Are you sure you want to delete this cat?");
     if (confirmRemoval) removeCollectionElement(collectionElementId);
 };
@@ -157,7 +142,7 @@ const removeCollectionElement = (collectionElementId) => {
     saveCollectionToLocalStorage();
     checkIfCanAddAgain(collectionElementToRemove);
     removeIdFromArraySelected(collectionElementId);
-    setRemoveAllSelectedButton();
+    toggleRemoveSelectedBtn();
     resetIfPossible();
 };
 
@@ -188,7 +173,7 @@ const saveCollectionToLocalStorage = () => {
 };
 
 const previewCollectionImage = (drawnImageSource) => {
-    collectionImagePreviewOutput.style.backgroundImage = `url("${drawnImageSource}")`;
+    collectionImagePreviewOutput.style.backgroundImage = `${drawnImageSource}`;
 };
 
 const setCollectionElementsAmount = () => {
@@ -201,4 +186,35 @@ drawAnotherBtn.addEventListener("click", setNewImageSource);
 addToCollectionBtn.addEventListener("click", () => {
     if (drawnImageSource === "") return;
     addToCollection();
+});
+
+collectionImagesContainer.addEventListener("click", (event) => {
+    const element = event.target;
+    const { tagName, className } = element;
+
+    const classNames = {
+        removeButtonClass: "container__btn container__collection-image-btn container__collection-image-btn--remove",
+        removeIconClass: "container__remove-icon",
+        containerClass: "container__collection-image",
+    };
+
+    const { removeButtonClass, removeIconClass, containerClass } = classNames;
+
+    const closestContainer = element.closest(`.${containerClass}`);
+
+    const elementContainerId = closestContainer.id;
+    const elementContainerClass = closestContainer.className;
+    const elementContainerImageSource = closestContainer.style.backgroundImage;
+
+    if (tagName === "BUTTON" || tagName === "IMG") {
+        if (className === removeButtonClass || className === removeIconClass) {
+            removeSingleElementById(elementContainerId);
+        } else {
+            previewCollectionImage(elementContainerImageSource);
+        }
+    }
+
+    if (elementContainerClass === containerClass && tagName === "DIV") {
+        markElementAsSelected(elementContainerId);
+    }
 });

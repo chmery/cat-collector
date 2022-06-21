@@ -205,10 +205,10 @@ span {
   opacity: 0;
   transition: visibility 0.2s, opacity 0.2s, background 0.2s;
 }
-.container__collection-image-btn--left {
+.container__collection-image-btn--remove {
   left: 10%;
 }
-.container__collection-image-btn--right {
+.container__collection-image-btn--preview {
   right: 10%;
 }
 .container__collection-image:hover .container__collection-image-btn {
