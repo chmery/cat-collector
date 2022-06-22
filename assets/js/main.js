@@ -15,18 +15,13 @@ let collectionElementsAmount = localStorage.collectionElementsAmount || 0;
 let currentCollectionElementImageSource = "";
 let collectionElementId = 0;
 
-//Initial state based on the local storage.
-const setSavedElementsAmount = () => {
-    collectionElementsAmountOutput.textContent = collectionElementsAmount;
-};
+// Initial state based on the local storage
+const setSavedElementsAmount = () => (collectionElementsAmountOutput.textContent = collectionElementsAmount);
 
 const setSavedCollectionElements = () => {
     if (localStorage.collectionHTML === undefined) return;
     collectionImagesContainer.innerHTML = localStorage.collectionHTML;
 };
-
-setSavedElementsAmount();
-setSavedCollectionElements();
 
 const toggleLoader = (option) => {
     const loader = document.querySelector(".container__loader");
@@ -44,15 +39,11 @@ const setNewImageSource = () => {
         });
 };
 
-//setNewImageSource();
-
 const setUsedId = () => {
     if (elementInCollection()) return;
-    const isIdInArray = () => {
-        return usedIdNumbers.some((item) => item === collectionElementId);
-    };
+    const isIdUsed = () => usedIdNumbers.includes(collectionElementId);
 
-    while (isIdInArray() && usedIdNumbers !== 0) {
+    while (isIdUsed() && usedIdNumbers !== 0) {
         collectionElementId++;
     }
 
@@ -60,28 +51,24 @@ const setUsedId = () => {
     localStorage.setItem("usedIdNumbers", JSON.stringify(usedIdNumbers));
 };
 
-const elementInCollection = () => {
-    if (currentCollectionElementImageSource === `url("${drawnImageSource}")`) return true;
-};
+const elementInCollection = () => currentCollectionElementImageSource === `url("${drawnImageSource}")`;
 
 const addToCollection = () => {
     setUsedId();
     const collectionElement = collectionElementTemplate.content.cloneNode(true);
 
-    const setBackgroundImage = () => {
-        collectionElement.querySelector(".container__collection-image").style.backgroundImage = `url("${drawnImageSource}")`;
-    };
+    const setBackgroundImage = () =>
+        (collectionElement.querySelector(".container__collection-image").style.backgroundImage = `url("${drawnImageSource}")`);
 
-    const setCollectionElementId = () => {
+    const setCollectionElementId = () =>
         collectionElement.querySelector(".container__collection-image").setAttribute("id", collectionElementId);
-    };
 
-    if (isElementInCollection() === false) {
+    if (isElementInCollection()) {
+        alert("You've already added this cat!");
+    } else {
         setBackgroundImage();
         setCollectionElementId();
         collectionImagesContainer.appendChild(collectionElement);
-    } else {
-        alert("You've already added this cat!");
     }
 
     saveCollectionToLocalStorage();
@@ -103,12 +90,13 @@ let selectedCollectionElements = [];
 
 const markElementAsSelected = (collectionElementId) => {
     const selectedElement = document.getElementById(collectionElementId);
-    if (selectedElement.style.boxShadow === "") {
-        selectedElement.style.boxShadow = "0px 0px 0px 4px #F9D252";
-        selectedCollectionElements.push(collectionElementId);
-    } else {
+
+    if (selectedElement.style.boxShadow) {
         selectedElement.style.boxShadow = "";
         removeIdFromArraySelected(collectionElementId);
+    } else {
+        selectedElement.style.boxShadow = "0px 0px 0px 4px #F9D252";
+        selectedCollectionElements.push(collectionElementId);
     }
     toggleRemoveSelectedBtn();
 };
@@ -140,7 +128,7 @@ const removeCollectionElement = (collectionElementId) => {
     removeElement(collectionElementToRemove);
     setCollectionElementsAmount();
     saveCollectionToLocalStorage();
-    checkIfCanAddAgain(collectionElementToRemove);
+    setAsNotInCollection(collectionElementToRemove);
     removeIdFromArraySelected(collectionElementId);
     toggleRemoveSelectedBtn();
     resetIfPossible();
@@ -156,7 +144,7 @@ const removeIdFromArraySelected = (collectionElementId) => {
     selectedCollectionElements = afterDeselect;
 };
 
-const checkIfCanAddAgain = (collectionElementToRemove) => {
+const setAsNotInCollection = (collectionElementToRemove) => {
     if (collectionElementToRemove.style.backgroundImage == currentCollectionElementImageSource)
         currentCollectionElementImageSource = "";
 };
@@ -168,13 +156,8 @@ const resetIfPossible = () => {
     }
 };
 
-const saveCollectionToLocalStorage = () => {
-    localStorage.collectionHTML = collectionImagesContainer.innerHTML;
-};
-
-const previewCollectionImage = (drawnImageSource) => {
-    collectionImagePreviewOutput.style.backgroundImage = `${drawnImageSource}`;
-};
+const saveCollectionToLocalStorage = () => (localStorage.collectionHTML = collectionImagesContainer.innerHTML);
+const previewCollectionImage = (drawnImageSource) => (collectionImagePreviewOutput.style.backgroundImage = `${drawnImageSource}`);
 
 const setCollectionElementsAmount = () => {
     localStorage.collectionElementsAmount = collectionElementsAmount;
@@ -218,3 +201,6 @@ collectionImagesContainer.addEventListener("click", (event) => {
         markElementAsSelected(elementContainerId);
     }
 });
+
+setSavedElementsAmount();
+setSavedCollectionElements();
