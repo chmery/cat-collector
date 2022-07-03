@@ -58,7 +58,9 @@ const addToCollection = () => {
     const collectionElement = collectionElementTemplate.content.cloneNode(true);
 
     const setBackgroundImage = () =>
-        (collectionElement.querySelector(".container__collection-image").style.backgroundImage = `url("${drawnImageSource}")`);
+        (collectionElement.querySelector(
+            ".container__collection-image"
+        ).style.backgroundImage = `url("${drawnImageSource}")`);
 
     const setCollectionElementId = () =>
         collectionElement.querySelector(".container__collection-image").setAttribute("id", collectionElementId);
@@ -157,7 +159,9 @@ const resetIfPossible = () => {
 };
 
 const saveCollectionToLocalStorage = () => (localStorage.collectionHTML = collectionImagesContainer.innerHTML);
-const previewCollectionImage = (drawnImageSource) => (collectionImagePreviewOutput.style.backgroundImage = `${drawnImageSource}`);
+
+const previewCollectionImage = (drawnImageSource) =>
+    (collectionImagePreviewOutput.style.backgroundImage = `${drawnImageSource}`);
 
 const setCollectionElementsAmount = () => {
     localStorage.collectionElementsAmount = collectionElementsAmount;
